@@ -4,12 +4,16 @@ import { UploadButton } from "./utils/uploadthing";
 import { postTranscribeUrl } from "./api/transcribeUrl";
 import TextToSpeech from "./components/TextToSpeech";
 
+import SubscriptionInfo from "./api/subscriptionInfo ";
+
 const Home = () => {
   const [data, setData] = useState();
   const [transcriptionResult, setTranscriptionResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [textToSpeech, setTextToSpeech] = useState("");
-
+  const elevenlabsApiKey = process.env.ELEVENLABS_KEY;
+  const maxCharacterLimit = 500;
+  const { quotaInfo } = SubscriptionInfo();
   const handleTranscriptionClick = async () => {
     if (data && data[0]?.serverData?.file?.url) {
       try {
@@ -33,12 +37,16 @@ const Home = () => {
     // Pass the textToSpeech value as a prop to the TextToSpeech component
     setTextToSpeech("");
   };
+  const handleTextareaChange = (e) => {
+    const input = e.target.value.substr(0, maxCharacterLimit);
+    setTextToSpeech(input);
+  };
 
   return (
-    <main className="p-4 flex flex-col justify-center items-center bg-green-100 min-h-screen">
+    <main className="p-4 flex flex-col justify-center items-center  min-h-screen">
       <div className="max-w-3xl mx-auto">
         <div className="mb-4">
-        <h1>Transcribe An Audio File </h1>
+          <h1>Transcribe An Audio File </h1>
           <UploadButton
             endpoint="imageUploader"
             onClientUploadComplete={(res) => {
@@ -82,13 +90,36 @@ const Home = () => {
       </div>
       <div className="flex flex-col items-center">
         <h1>Text To Speech</h1>
+  
+        <TextToSpeech
+          textToAudio={textToSpeech}
+          elevenlabsApiKey={elevenlabsApiKey}
+        />
+      </div>
+      <div className="container mx-auto">
+        <h1 className="text-3xl font-bold mb-5">Text to Speech</h1>
         <textarea
           value={textToSpeech}
-          onChange={(e) => setTextToSpeech(e.target.value)}
+          onChange={handleTextareaChange}
           placeholder="Enter text..."
           className="border p-2 w-full mb-4"
+          maxLength={maxCharacterLimit}
         />
-        <TextToSpeech textToAudio={textToSpeech} />
+        <div className="flex flex-row justify-between">
+          <p className=" text-gray-500">
+            Total quota remaining:{" "}
+            {quotaInfo && quotaInfo.character_limit - quotaInfo.character_count}
+          </p>
+          <p className=" text-gray-500">
+            {textToSpeech.length}/{maxCharacterLimit}
+          </p>
+        </div>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5"
+          // onClick={handleGenerate}
+        >
+          Generate
+        </button>
       </div>
     </main>
   );

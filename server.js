@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const deepgramApiKey = "8cc9ccf3f80180c38daa46a82dabb942237689a6";
+const deepgramApiKey = process.env.NEXT_PUBLIC_DEEPGRAM_API_KEY;
 
 // Create a route to transcribe the audio file from a URL
 app.post("/transcribe", async (req, res) => {

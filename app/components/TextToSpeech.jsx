@@ -5,12 +5,12 @@ const TextToSpeech = ({ textToAudio }) => {
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef(null);
   const [audioUrl, setAudioUrl] = useState('');
-
+  const elevenlabsApiKey = process.env.NEXT_PUBLIC_ELEVENLABS_KEY
   const handleTextToSpeech = async () => {
     try {
       setIsLoading(true);
       const url = 'https://api.elevenlabs.io/v1/text-to-speech/tWY0WHMWfyHymOO3STD2'; // Replace <voice-id> with the desired voice ID
-      const xiApiKey = '551611176ee83c1f4a43887c5c90fea0'; // Replace <xi-api-key> with your Xi API key
+      const xiApiKey = elevenlabsApiKey; // Replace <xi-api-key> with your Xi API key
 
       const headers = {
         Accept: 'audio/mpeg',
@@ -20,7 +20,7 @@ const TextToSpeech = ({ textToAudio }) => {
 
       const data = {
         text: textToAudio,
-        model_id: 'eleven_monolingual_v1',
+        model_id: 'eleven_multilingual_v2',
         voice_settings: {
           stability: 0.5,
           similarity_boost: 0.5,
@@ -50,7 +50,7 @@ const TextToSpeech = ({ textToAudio }) => {
       <button
       className='bg-blue-500 text-white px-4 py-2 rounded-md cursor-pointer mt-4
       ' onClick={handleTextToSpeech} disabled={isLoading}>
-        {isLoading ? 'Loading...' : 'Generate'}
+        {isLoading ? 'Loading...' : 'Text-to-Speech'}
       </button>
       {audioUrl && <audio controls ref={audioRef} />}
     </div>
