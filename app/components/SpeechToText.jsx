@@ -29,15 +29,15 @@ const SpeechToText = () => {
       }
     };
   return (
-    <div className="container ">
-        <h1 className="text-3xl font-bold mb-5">Speech To Text </h1>
-        <div className="flex flex-row justify-between border rounded-t-xl  rounded-r-xl border-gray-200 p-8 bg-[#fcfcfc]">
+    <div className="container  h-3/4">
+
+        <div className="flex flex-row justify-between border-gray-200 p-8 bg-[#fcfcfc]">
             <div><h3>Source</h3></div>
     <div className="w-10/12">
       
  
       <UploadDropzone
-      endpoint="imageUploader"
+      endpoint="audioUploader"
       onClientUploadComplete={(res) => {
         setData(res);
         console.log("Files:", res);

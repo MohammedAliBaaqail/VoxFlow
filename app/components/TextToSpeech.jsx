@@ -19,7 +19,7 @@ const TextToSpeech = () => {
   const dropdownValues = [
     { label: 'Markus - Mature and Chill', value: 'hWLbKGi1RrAMq01srEWl' },
     { label: 'Noah - Calm', value: 'o21mOUZDeycKuvhWMALT' },
-    { label: 'Brian', value: 'tWY0WHMWfyHymOO3STD2' },
+    { label: 'Brian - British', value: 'tWY0WHMWfyHymOO3STD2' },
   ];
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState(dropdownValues[0].value);
@@ -99,9 +99,9 @@ const TextToSpeech = () => {
   };
 
   return (
-    <div className='container  '>
-      <h1 className="text-3xl font-bold mb-5">Text to Speech</h1>
-      <div className='flex flex-row justify-between border rounded-t-xl  rounded-r-xl border-gray-200 p-8 bg-[#fcfcfc]'>
+    <div className='container  h-3/4'>
+
+      <div className='flex flex-row justify-between border  border-gray-200 p-8 bg-[#fcfcfc]'>
         <div><h3>Settings</h3></div>
         <div className='w-10/12'>
       <label htmlFor="dropdown" className="block text-sm font-medium text-gray-700 ">
