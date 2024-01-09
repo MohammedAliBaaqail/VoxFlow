@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { UploadButton } from "../utils/uploadthing";
+import { UploadButton ,UploadDropzone } from "../utils/uploadthing";
 import { postTranscribeUrl } from "../api/transcribeUrl";
 
 const SpeechToText = () => {
@@ -29,20 +29,25 @@ const SpeechToText = () => {
       }
     };
   return (
-    <div className="container border border-gray-200 p-8">
-    <div className="mb-4">
-      <h1>Transcribe An Audio File </h1>
-      <UploadButton
-        endpoint="imageUploader"
-        onClientUploadComplete={(res) => {
-          setData(res);
-          console.log("Files:", res);
-          alert("Upload Completed");
-        }}
-        onUploadError={(error) => {
-          alert(`ERROR! ${error.message}`);
-        }}
+    <div className="container ">
+        <h1 className="text-3xl font-bold mb-5">Speech To Text </h1>
+        <div className="flex flex-row justify-between border rounded-t-xl  rounded-r-xl border-gray-200 p-8 bg-[#fcfcfc]">
+            <div><h3>Source</h3></div>
+    <div className="w-10/12">
+      
+ 
+      <UploadDropzone
+      endpoint="imageUploader"
+      onClientUploadComplete={(res) => {
+        setData(res);
+        console.log("Files:", res);
+        alert("Upload Completed");
+      }}
+      onUploadError={(error) => {
+        alert(`ERROR! ${error.message}`);
+      }}
       />
+    </div>
     </div>
 
     <div className="mb-4">

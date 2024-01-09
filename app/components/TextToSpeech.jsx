@@ -234,7 +234,7 @@ const TextToSpeech = () => {
         value={textToSpeech}
         onChange={handleTextareaChange}
         placeholder="Enter text..."
-        className="border p-2 w-full mb-4 block  text-base bg-white rounded-md border-gray-300 shadow-sm focus:border-gray-200 focus:ring-gray-200"
+        className="border resize-none p-2 w-full h-[165px] mb-4 block  text-base bg-white rounded-md border-gray-300 shadow-sm focus:border-gray-200 focus:ring-gray-200"
         maxLength={maxCharacterLimit}
       />
 
