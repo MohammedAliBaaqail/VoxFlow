@@ -12,7 +12,7 @@ const deepgramApiKey = process.env.NEXT_PUBLIC_DEEPGRAM_API_KEY;
 // Create a route to transcribe the audio file from a URL
 app.post("/transcribe", async (req, res) => {
   try {
-    const deepgram = createClient(deepgramApiKey);
+    const deepgram = createClient('8cc9ccf3f80180c38daa46a82dabb942237689a6');
 
     const { url } = req.body;
     console.log(url);
