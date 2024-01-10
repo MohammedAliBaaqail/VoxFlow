@@ -1,8 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import {  createClient } from "@deepgram/sdk";
 import { UploadButton, UploadDropzone } from "../utils/uploadthing";
+import useDeepgram from '../api/useDeepgram'; 
 import { postTranscribeUrl } from "../api/transcribeUrl";
-
+const deepgram = createClient('8cc9ccf3f80180c38daa46a82dabb942237689a6');
 const SpeechToText = () => {
   const [data, setData] = useState();
   const [transcriptionResult, setTranscriptionResult] = useState("");
@@ -10,21 +12,39 @@ const SpeechToText = () => {
 
   const handleTranscriptionClick = async () => {
     if (data && data[0]?.serverData?.file?.url) {
-      try {
-        setIsLoading(true);
-        const result = await postTranscribeUrl(data[0]?.serverData?.file?.url);
-
-        setTranscriptionResult(
-          result?.results.channels[0].alternatives[0].paragraphs.transcript ||
-            ""
-        );
-      } catch (err) {
-        console.error("Error while fetching transcription:", err);
-      } finally {
-        setIsLoading(false);
-      }
+       
+        const audioUrl = data[0]?.serverData?.file?.url; // Replace with the actual audio URL
+        const result = await useDeepgram(audioUrl);
+  
+        if (result !== null) {
+          // Do something with the transcribed data
+          console.log("Transcription result:", result);
+          setTranscriptionResult(result?.results.channels[0].alternatives[0].paragraphs.transcript);
+        } else {
+          // Handle the error case
+          console.error("Error occurred during transcription");
+        }
+            
+        
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const audioUrl = 'YOUR_AUDIO_URL_HERE'; // Replace with the actual audio URL
+      const result = await useDeepgram(audioUrl);
+
+      if (result !== null) {
+        // Do something with the transcribed data
+        console.log("Transcription result:", result);
+      } else {
+        // Handle the error case
+        console.error("Error occurred during transcription");
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="container  h-full ">
@@ -59,16 +79,16 @@ const SpeechToText = () => {
               Your browser does not support the audio element.
             </audio>
             <div className="w-full flex justify-between px-4 mt-2 ">
-              <spen> {data && data[0].serverData?.file?.name}</spen>
+              <span> {data && data[0].serverData?.file?.name}</span>
 
-              <spen>
+              <span>
                 {" "}
                 {data &&
                   (data[0].serverData?.file?.size * 0.00000095367).toFixed(
                     2
                   )}{" "}
                 MB
-              </spen>
+              </span>
             </div>
             <button
               onClick={handleTranscriptionClick}
