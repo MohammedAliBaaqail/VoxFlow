@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 
+
 import { Transition } from '@headlessui/react';
 
 const TextToSpeech = () => {
@@ -99,9 +100,9 @@ const TextToSpeech = () => {
   };
 
   return (
-    <div className='container  h-3/4'>
+    <div className='container  h-full '>
 
-      <div className='flex flex-row justify-between border  border-gray-200 p-8 bg-[#fcfcfc]'>
+      <div className='flex flex-row  justify-between border  border-gray-200 p-8 bg-[#fcfcfc]'>
         <div><h3>Settings</h3></div>
         <div className='w-10/12'>
       <label htmlFor="dropdown" className="block text-sm font-medium text-gray-700 ">
@@ -185,8 +186,9 @@ const TextToSpeech = () => {
       </div>
    
      <div className="flex flex-col w-full/4 mb-4">
+      
       <label htmlFor="customStability" className="text-gray-600 mb-2">
-        Stability: {Math.round(customStability * 100)}%
+        Stability {Math.round(customStability * 100)}%
       </label>
       <input
         type="range"
@@ -199,7 +201,7 @@ const TextToSpeech = () => {
         className="w-full appearance-none h-1 bg-gray-200 rounded-full focus:outline-none"
       />
       <label htmlFor="customSimilarity" className="text-gray-600 mb-2 mt-4">
-        Similarity: {Math.round(customSimilarity * 100)}%
+        Similarity {Math.round(customSimilarity * 100)}%
       </label>
       <input
         type="range"
@@ -212,7 +214,7 @@ const TextToSpeech = () => {
         className="w-full appearance-none h-1 bg-gray-200 rounded-full focus:outline-none"
       />
       <label htmlFor="customStyle" className="text-gray-600 mb-2 mt-4">
-        Style Exaggeration: {Math.round(customStyle * 100)}%
+        Style Exaggeration {Math.round(customStyle * 100)}%
       </label>
       <input
         type="range"
@@ -227,14 +229,14 @@ const TextToSpeech = () => {
     </div>
     </div>
     </div>
-    <div className='flex flex-row justify-between border rounded-bl-xl  rounded-br-xl border-gray-200 p-8 bg-[#fcfcfc]'>
+    <div className='flex flex-row justify-between border  border-gray-200 p-8 bg-[#fcfcfc]'>
       <div><h3>Text</h3></div>
       <div className='w-10/12'>
       <textarea
         value={textToSpeech}
         onChange={handleTextareaChange}
         placeholder="Enter text..."
-        className="border resize-none p-2 w-full h-[165px] mb-4 block  text-base bg-white rounded-md border-gray-300 shadow-sm focus:border-gray-200 focus:ring-gray-200"
+        className="border overflow-auto resize-none p-2 w-full h-[125px] mb-4 block  text-base bg-white rounded-md border-gray-300 shadow-sm focus:border-gray-200 focus:ring-gray-200"
         maxLength={maxCharacterLimit}
       />
 
@@ -255,8 +257,14 @@ const TextToSpeech = () => {
         {isLoading ? 'Loading...' : 'Generate'}
       </button>
 
-      {audioUrl && <audio controls ref={audioRef} />}
+    
       </div>
+      </div>
+      <div className='flex flex-row justify-between  border rounded-bl-xl  rounded-br-xl border-gray-200 p-8 bg-[#fcfcfc]'>
+        <div><h3>Result</h3></div>
+        <div className='w-10/12'>
+        {audioUrl && <audio controls ref={audioRef} className='w-full' />}
+        </div>
       </div>
     </div>
   );

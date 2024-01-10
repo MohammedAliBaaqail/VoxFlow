@@ -7,7 +7,7 @@ const Home = () => {
   const [activeTab, setActiveTab] = useState("textToSpeech");
 
   return (
-    <main className="p-4 h-screen flex flex-col justify-center items-center min-h-screen ">
+    <main className="p-4 h-screen flex flex-col justify-start items-center min-h-screen ">
       <div className="flex justify-between w-full space-x-4  border rounded-t-xl   border-gray-200 p-8 bg-[#fcfcfc]">
         <div><h3>Task</h3></div>
         <div className="flex  justify-around w-10/12">
@@ -33,8 +33,13 @@ const Home = () => {
         </button>
         </div>
       </div>
-      {activeTab === "textToSpeech" && <TextToSpeech />}
-      {activeTab === "speechToText" && <SpeechToText />}
+
+      <div className={activeTab !== "textToSpeech" ? "hidden" : "container  h-3/4"}>
+        <TextToSpeech />
+      </div>
+      <div className={activeTab !== "speechToText" ? "hidden" : "container  h-3/4"}>
+        <SpeechToText />
+      </div>
     </main>
   );
 };
