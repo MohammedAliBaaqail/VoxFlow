@@ -55,16 +55,16 @@ const SpeechToText = () => {
         {data? (
           <div className="w-10/12 max-md:w-full">
             <audio controls className="w-full">
-              <source src={data && data[0].fileUrl} type="audio/mpeg" />
+              <source src={data[0]?.serverData?.file?.url} type="audio/mpeg" />
               Your browser does not support the audio element.
             </audio>
             <div className="w-full flex justify-between px-4 mt-2 ">
-              <spen> {data && data[0].fileName}</spen>
+              <spen> {data && data[0].serverData?.file?.name}</spen>
 
               <spen>
                 {" "}
                 {data &&
-                  (data[0].fileSize * 0.00000095367).toFixed(
+                  (data[0].serverData?.file?.size * 0.00000095367).toFixed(
                     2
                   )}{" "}
                 MB
