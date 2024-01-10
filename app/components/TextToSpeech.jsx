@@ -102,7 +102,7 @@ const TextToSpeech = () => {
   return (
     <div className='container  h-full '>
 
-      <div className='flex flex-row  justify-between border  border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col'>
+      <div className='flex flex-row  justify-between border  border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3'>
         <div><h3    className="max-md:mb-3">Settings</h3></div>
         <div className='w-10/12 max-md:w-full'>
       <label htmlFor="dropdown" className="block text-sm font-medium text-gray-700 ">
@@ -229,7 +229,7 @@ const TextToSpeech = () => {
     </div>
     </div>
     </div>
-    <div className='flex flex-row justify-between border  border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col'>
+    <div className='flex flex-row justify-between border  border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3'>
       <div><h3    className="max-md:mb-3">Text</h3></div>
       <div className='w-10/12 max-md:w-full'>
       <textarea
@@ -260,10 +260,11 @@ const TextToSpeech = () => {
     
       </div>
       </div>
-      <div className='flex flex-row justify-between  border rounded-bl-xl  rounded-br-xl border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col'>
+      <div className='flex flex-row justify-between  border rounded-bl-xl  rounded-br-xl border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3'>
         <div><h3    className="max-md:mb-3">Result</h3></div>
         <div className='w-10/12   max-md:w-full'>
-        {audioUrl && <audio controls ref={audioRef} className='w-full' />}
+        {audioUrl ? (<audio controls ref={audioRef} className='w-full' />)
+        :<p className="w-10/12 text-center my-auto max-md:w-full">Not Available</p>}
         </div>
       </div>
     </div>
