@@ -2,8 +2,7 @@
 import { useState } from "react";
 import TextToSpeech from "./components/TextToSpeech";
 import SpeechToText from "./components/SpeechToText";
-import Image from "next/image";
-import Microphone from "./microphone";
+
 
 
 const Home = () => {
