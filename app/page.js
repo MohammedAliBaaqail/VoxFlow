@@ -7,10 +7,10 @@ const Home = () => {
   const [activeTab, setActiveTab] = useState("textToSpeech");
 
   return (
-    <main className="p-4 h-screen flex flex-col justify-start items-center min-h-screen ">
-      <div className="flex justify-between w-full space-x-4  border rounded-t-xl   border-gray-200 p-8 bg-[#fcfcfc]">
+    <main className=" container p-4 h-screen flex flex-col justify-start items-center min-h-screen ">
+      <div className="flex  justify-between w-full   border rounded-t-xl   border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col">
         <div><h3>Task</h3></div>
-        <div className="flex  justify-around w-10/12">
+        <div className="flex  justify-around w-10/12 max-md:flex-col max-md:w-full">
         <button
           className={`py-2 px-4 rounded ${
             activeTab === "textToSpeech"

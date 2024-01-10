@@ -27,11 +27,11 @@ const SpeechToText = () => {
   };
   return (
     <div className="container  h-full ">
-      <div className="flex flex-row justify-between  border border-gray-200 p-8 bg-[#fcfcfc]">
+      <div className="flex flex-row justify-between  border border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col">
         <div>
-          <h3>Source</h3>
+          <h3 className="max-md:mb-3">Source</h3>
         </div>
-        <div className="w-10/12">
+        <div className="w-10/12 max-md:w-full">
           <UploadDropzone
             endpoint="audioUploader"
             onClientUploadComplete={(res) => {
@@ -46,13 +46,13 @@ const SpeechToText = () => {
         </div>
       </div>
 
-      <div className="flex flex-row justify-between  border border-gray-200 p-8 bg-[#fcfcfc] ">
+      <div className="flex flex-row justify-between  border border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col">
         <div>
-          <h3>Audio</h3>
+          <h3     className="max-md:mb-3">Audio</h3>
         </div>
-
+     
         {data? (
-          <div className="w-10/12">
+          <div className="w-10/12 max-md:w-full">
             <audio controls className="w-full">
               <source src={data[0]?.serverData?.file?.url} type="audio/mpeg" />
               Your browser does not support the audio element.
@@ -78,23 +78,23 @@ const SpeechToText = () => {
             </button>
 
           </div>
-        ): <p className="w-10/12 text-center my-auto">Not Uploaded</p>}
+        ): <p className="w-10/12 text-center my-auto max-md:w-full">Not Uploaded</p>}
         
       </div>
       
-      <div className="flex flex-row justify-between  border border-gray-200 p-8 bg-[#fcfcfc] ">
+      <div className="flex flex-row justify-between  border border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col">
               <div>
-                <h3>Result</h3>
+                <h3    className="max-md:mb-3">Result</h3>
               </div>
 
              
                 {transcriptionResult ? (
-                     <div className="w-10/12">
+                     <div className="w-10/12 max-md:w-full">
                   <p className="border p-2  w-full min-h-24 overflow-auto">
                     {transcriptionResult}
                   </p>
                   </div>
-                ): <p className="w-10/12 text-center my-auto">Not Available</p>}
+                ): <p className="w-10/12 text-center my-auto max-md:w-full">Not Available</p>}
               
             </div>
     </div>
