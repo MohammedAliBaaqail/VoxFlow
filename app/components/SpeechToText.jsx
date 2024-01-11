@@ -1,10 +1,10 @@
 "use client";
-import React, { useState,useEffect } from "react";
-import {  createClient } from "@deepgram/sdk";
+import React, { useState, useEffect } from "react";
+import { createClient } from "@deepgram/sdk";
 import { UploadButton, UploadDropzone } from "../utils/uploadthing";
-import useDeepgram from '../api/useDeepgram'; 
+import useDeepgram from "../api/useDeepgram";
 import { postTranscribeUrl } from "../api/transcribeUrl";
-const deepgram = createClient('8cc9ccf3f80180c38daa46a82dabb942237689a6');
+const deepgram = createClient("8cc9ccf3f80180c38daa46a82dabb942237689a6");
 const SpeechToText = () => {
   const [data, setData] = useState();
   const [transcriptionResult, setTranscriptionResult] = useState("");
@@ -12,26 +12,37 @@ const SpeechToText = () => {
 
   const handleTranscriptionClick = async () => {
     if (data && data[0]?.serverData?.file?.url) {
-       
-        const audioUrl = data[0]?.serverData?.file?.url; // Replace with the actual audio URL
-        const result = await useDeepgram(audioUrl);
-  
-        if (result !== null) {
-          // Do something with the transcribed data
-          console.log("Transcription result:", result);
-          setTranscriptionResult(result?.results.channels[0].alternatives[0].paragraphs.transcript);
-        } else {
-          // Handle the error case
-          console.error("Error occurred during transcription");
+      const audioUrl = data[0]?.serverData?.file?.url;
+      try {
+        const response = await fetch('https://vox-flow-be.vercel.app/transcribe', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // Add any additional headers if needed
+          },
+          body: JSON.stringify({url:audioUrl}),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-            
-        
+
+        const result = await response.json();
+        console.log("Transcription result:", result);
+        setTranscriptionResult(
+          result.results.channels[0].alternatives[0].paragraphs.transcript
+        );
+        // Handle the result as needed
+      } catch (error) {
+        console.error("Error during POST request:", error.message);
+        // Handle the error
+      }
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const audioUrl = 'YOUR_AUDIO_URL_HERE'; // Replace with the actual audio URL
+      const audioUrl = "YOUR_AUDIO_URL_HERE"; // Replace with the actual audio URL
       const result = await useDeepgram(audioUrl);
 
       if (result !== null) {
@@ -69,10 +80,10 @@ const SpeechToText = () => {
 
       <div className="flex flex-row justify-between  border border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3">
         <div>
-          <h3     className="max-md:mb-3">Audio</h3>
+          <h3 className="max-md:mb-3">Audio</h3>
         </div>
-     
-        {data? (
+
+        {data ? (
           <div className="w-10/12 max-md:w-full">
             <audio controls className="w-full">
               <source src={data[0]?.serverData?.file?.url} type="audio/mpeg" />
@@ -97,27 +108,31 @@ const SpeechToText = () => {
             >
               {isLoading ? "Loading..." : "Transcribe"}
             </button>
-
           </div>
-        ): <p className="w-10/12 text-center my-auto max-md:w-full">Not Uploaded</p>}
-        
+        ) : (
+          <p className="w-10/12 text-center my-auto max-md:w-full">
+            Not Uploaded
+          </p>
+        )}
       </div>
-      
-      <div className="flex flex-row justify-between  border border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3">
-              <div>
-                <h3    className="max-md:mb-3">Result</h3>
-              </div>
 
-             
-                {transcriptionResult ? (
-                     <div className="w-10/12 max-md:w-full">
-                  <p className="border p-2  w-full min-h-24 overflow-auto">
-                    {transcriptionResult}
-                  </p>
-                  </div>
-                ): <p className="w-10/12 text-center my-auto max-md:w-full">Not Available</p>}
-              
-            </div>
+      <div className="flex flex-row justify-between  border border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3">
+        <div>
+          <h3 className="max-md:mb-3">Result</h3>
+        </div>
+
+        {transcriptionResult ? (
+          <div className="w-10/12 max-md:w-full">
+            <p className="border p-2  w-full min-h-24 overflow-auto">
+              {transcriptionResult}
+            </p>
+          </div>
+        ) : (
+          <p className="w-10/12 text-center my-auto max-md:w-full">
+            Not Available
+          </p>
+        )}
+      </div>
     </div>
   );
 };
