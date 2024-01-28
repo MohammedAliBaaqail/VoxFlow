@@ -116,7 +116,7 @@ const SpeechToText = () => {
         )}
       </div>
 
-      <div className="flex flex-row justify-between  border border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3">
+      <div className="flex flex-row justify-between   border rounded-bl-xl  rounded-br-xl border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3">
         <div>
           <h3 className="max-md:mb-3">Result</h3>
         </div>

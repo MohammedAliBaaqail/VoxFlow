@@ -25,9 +25,9 @@ const TextToSpeech = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState(dropdownValues[0].value);
   
-    const handleDropdownChange = (event) => {
-      setSelectedValue(event.target.value);
-    };
+    // const handleDropdownChange = (event) => {
+    //   setSelectedValue(event.target.value);
+    // };
 
   const fetchQuotaInfo = async () => {
     try {
@@ -101,7 +101,30 @@ const TextToSpeech = () => {
 
   return (
     <div className='container  h-full '>
+      <div className='flex flex-row justify-between border  border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3'>
+      <div><h3    className="max-md:mb-3">Text</h3></div>
+      <div className='w-10/12 max-md:w-full'>
+      <textarea
+        value={textToSpeech}
+        onChange={handleTextareaChange}
+        placeholder="Enter text..."
+        className="border overflow-auto resize-none p-2 w-full h-[125px] mb-4 block  text-base bg-white rounded-md border-gray-300 shadow-sm focus:border-gray-200 focus:ring-gray-200"
+        maxLength={maxCharacterLimit}
+      />
 
+      <div className="flex flex-row justify-between">
+        <p className="text-gray-500">
+          Total quota remaining: {quota}
+        </p>
+        <p className="text-gray-500">
+          {textToSpeech.length}/{maxCharacterLimit}
+        </p>
+      </div>
+
+  
+    
+      </div>
+      </div>
       <div className='flex flex-row  justify-between border  border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3'>
         <div><h3    className="max-md:mb-3">Settings</h3></div>
         <div className='w-10/12 max-md:w-full'>
@@ -229,43 +252,24 @@ const TextToSpeech = () => {
     </div>
     </div>
     </div>
-    <div className='flex flex-row justify-between border  border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3'>
-      <div><h3    className="max-md:mb-3">Text</h3></div>
-      <div className='w-10/12 max-md:w-full'>
-      <textarea
-        value={textToSpeech}
-        onChange={handleTextareaChange}
-        placeholder="Enter text..."
-        className="border overflow-auto resize-none p-2 w-full h-[125px] mb-4 block  text-base bg-white rounded-md border-gray-300 shadow-sm focus:border-gray-200 focus:ring-gray-200"
-        maxLength={maxCharacterLimit}
-      />
+    
 
-      <div className="flex flex-row justify-between">
-        <p className="text-gray-500">
-          Total quota remaining: {quota}
-        </p>
-        <p className="text-gray-500">
-          {textToSpeech.length}/{maxCharacterLimit}
-        </p>
-      </div>
 
-      <button
+      <div className='flex flex-row justify-between  border rounded-bl-xl  rounded-br-xl border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3'>
+        <div><h3    className="max-md:mb-3">Result</h3></div>
+        <div className='flex flex-col w-10/12 max-md:w-full' >
+        <div className='w-full'>
+        {audioUrl ? (<audio controls ref={audioRef} className='w-full' />)
+        :<p className="w-full text-center my-auto">Not Available</p>}
+        </div>
+        <button
         className="bg-slate-800 w-full text-white px-4 py-2 rounded-md cursor-pointer mt-4"
         onClick={handleTextToSpeech}
         disabled={isLoading}
       >
         {isLoading ? 'Loading...' : 'Generate'}
       </button>
-
-    
       </div>
-      </div>
-      <div className='flex flex-row justify-between  border rounded-bl-xl  rounded-br-xl border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3'>
-        <div><h3    className="max-md:mb-3">Result</h3></div>
-        <div className='w-10/12   max-md:w-full'>
-        {audioUrl ? (<audio controls ref={audioRef} className='w-full' />)
-        :<p className="w-10/12 text-center my-auto max-md:w-full">Not Available</p>}
-        </div>
       </div>
     </div>
   );
