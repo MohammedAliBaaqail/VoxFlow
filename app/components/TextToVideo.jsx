@@ -64,7 +64,7 @@ const VideoGeneratorForm = () => {
         const flattenedAvatarGenders = avatarGenders.flat();
         setAvatarIds(flattenedAvatarIds);
         setAvatarGenders(flattenedAvatarGenders);
-        setSelectedAvatarId(flattenedAvatarIds[0]); // Set selectedAvatarId to the first avatar ID
+         // Set selectedAvatarId to the first avatar ID
       } catch (error) {
         console.error('Error fetching avatar data:', error);
       }
@@ -122,7 +122,7 @@ const VideoGeneratorForm = () => {
   const handleChange = (e, index, field) => {
     const { name, value } = e.target;
 
-    // Check if name is defined before accessing its properties
+   
     if (name && name.startsWith("offset")) {
       const axis = name.split("_")[1];
       const updatedClips = [...formData.clips];
@@ -150,9 +150,19 @@ const VideoGeneratorForm = () => {
       }));
     }
   };
+  const handleAvatarChange = (selectedAvatarId) => {
+    setSelectedAvatarId(selectedAvatarId);
+    setFormData((prevState) => ({
+      ...prevState,
+      clips: prevState.clips.map((clip) => ({
+        ...clip,
+        avatar_id: selectedAvatarId,
+      })),
+    }));
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const requestOptions = {
       method: "POST",
       headers: {
@@ -161,18 +171,26 @@ const VideoGeneratorForm = () => {
       },
       body: JSON.stringify(formData),
     };
-
+  
     try {
       const response = await fetch(
         "https://api.heygen.com/v1/video.generate",
         requestOptions
       );
-      const { data } = await response.json();
-      setVideoId(data.video_id);
+  
+      if (response.ok) {
+        const { data } = await response.json();
+        setVideoId(data.video_id);
+      } else {
+        const errorResponse = await response.json();
+        setErrorMessage(errorResponse.message);
+      }
     } catch (error) {
       console.error("Error:", error);
+      setErrorMessage("An error occurred while generating the video.");
     }
   };
+  
 
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
@@ -210,7 +228,7 @@ const VideoGeneratorForm = () => {
       })),
     }));
   }, [allVoices]);
-
+console.log(formData)
   return (
     <div className="container  h-full">
       <div className="flex flex-row justify-between border  border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3">
@@ -404,12 +422,12 @@ const VideoGeneratorForm = () => {
                       aria-activedescendant=""
                       className="py-1 text-base ring-1 ring-black ring-opacity-5 rounded-md shadow-xs"
                     >
-                    {avatarIds.map((id, idx) => (
+{avatarIds.map((id, idx) => (
   <li
     key={idx}
     role="option"
     onClick={() => {
-      setSelectedAvatarId(id); // Update selectedAvatarId when an option is clicked
+      handleAvatarChange(id);
       setIsOpenAvatar(false);
     }}
     className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-blue-100"
