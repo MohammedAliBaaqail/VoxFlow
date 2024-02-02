@@ -191,7 +191,34 @@ const VideoGeneratorForm = () => {
     }
   };
   
+  useEffect(() => {
+    const checkVideoStatus = async () => {
+        if (!videoId) return;
 
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'X-Api-Key': process.env.REACT_APP_API_KEY
+            }
+        };
+
+        try {
+            const response = await fetch(`https://api.heygen.com/v1/video_status.get?video_id=${videoId}`, requestOptions);
+            const { data } = await response.json();
+            setVideoStatus(data.status);
+
+            if (data.status === 'completed') {
+                setVideoUrl(data.video_url);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    const interval = setInterval(checkVideoStatus, 1000);
+
+    return () => clearInterval(interval);
+}, [videoId]);
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
     console.log(selectedLanguage);
@@ -678,7 +705,7 @@ console.log(formData)
               <p>Please try again.</p>
             </div>
           )}
-          {videoStatus !== "completed" && !errorMessage && (
+          {videoUrl && videoStatus !== "completed" && !errorMessage && (
             <p>Video status: {videoStatus}</p>
           )}
           <button
