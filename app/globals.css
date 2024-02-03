@@ -42,7 +42,13 @@ body {
   background-attachment: fixed;
   background-size: cover;
 }
+main{
+  margin: 0 auto;
 
+}
+.container  {
+  
+}
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
