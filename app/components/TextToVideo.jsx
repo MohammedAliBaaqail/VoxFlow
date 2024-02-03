@@ -648,13 +648,13 @@ const handleLanguageChange = (e) => {
                 </div>
               </label>
               <div className="w-full mb-2">
-              <div className="relative mt-3 mb-8  mr-1 w-1/6">
+              <div className="relative mt-3 mb-8  mr-1 w-full">
                 Background Color
                 <input
                   type="color"
                   value={formData.background}
                   onChange={(e) => handleChange(e, null, "background")} // Update background color
-                  className="relative  "
+                  className="relative mx-1 top-1 "
                 />
               </div>
               <label>
