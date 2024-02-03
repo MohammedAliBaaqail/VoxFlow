@@ -34,7 +34,7 @@ const VideoGeneratorForm = () => {
   const [isOpenAvatar, setIsOpenAvatar] = useState(false);
 
   const [videoId, setVideoId] = useState(null);
-  const [videoStatus, setVideoStatus] = useState();
+  const [videoStatus, setVideoStatus] = useState('not set');
   const [videoUrl, setVideoUrl] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [languages, setLanguages] = useState([]);
@@ -193,8 +193,6 @@ const VideoGeneratorForm = () => {
   
   useEffect(() => {
     const checkVideoStatus = async () => {
-        if (!videoId || videoStatus !== 'pending') return;
-
         const requestOptions = {
             method: 'GET',
             headers: {
@@ -215,13 +213,18 @@ const VideoGeneratorForm = () => {
         }
     };
 
-    const interval = setInterval(checkVideoStatus, 1000);
-
-    return () => clearInterval(interval);
+    if (videoStatus === 'pending') {
+        const interval = setInterval(checkVideoStatus, 1000);
+        return () => clearInterval(interval);
+    } else {
+        checkVideoStatus(); // Call the function once if videoStatus is not pending
+    }
 }, [videoId, videoStatus]);
-guageChange = (e) => {
+
+
+const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
-    console.log(selectedLanguage);
+
     setSelectedLanguage(selectedLanguage);
     const languageVoices = allVoices.filter(
       (voice) => voice.language === selectedLanguage
@@ -255,7 +258,7 @@ guageChange = (e) => {
       })),
     }));
   }, [allVoices]);
-console.log(formData)
+
   return (
     <div className="container  h-full">
       <div className="flex flex-row justify-between border  border-gray-200 p-8 bg-[#fcfcfc] max-md:flex-col max-md:p-3">
