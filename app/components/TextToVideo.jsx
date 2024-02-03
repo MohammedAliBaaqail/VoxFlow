@@ -34,7 +34,7 @@ const VideoGeneratorForm = () => {
   const [isOpenAvatar, setIsOpenAvatar] = useState(false);
 
   const [videoId, setVideoId] = useState(null);
-  const [videoStatus, setVideoStatus] = useState("pending");
+  const [videoStatus, setVideoStatus] = useState();
   const [videoUrl, setVideoUrl] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [languages, setLanguages] = useState([]);
@@ -193,7 +193,7 @@ const VideoGeneratorForm = () => {
   
   useEffect(() => {
     const checkVideoStatus = async () => {
-        if (!videoId) return;
+        if (!videoId || videoStatus !== 'pending') return;
 
         const requestOptions = {
             method: 'GET',
@@ -218,8 +218,8 @@ const VideoGeneratorForm = () => {
     const interval = setInterval(checkVideoStatus, 1000);
 
     return () => clearInterval(interval);
-}, [videoId]);
-  const handleLanguageChange = (e) => {
+}, [videoId, videoStatus]);
+guageChange = (e) => {
     const selectedLanguage = e.target.value;
     console.log(selectedLanguage);
     setSelectedLanguage(selectedLanguage);
@@ -702,10 +702,10 @@ console.log(formData)
           {errorMessage && (
             <div>
               <p>Error: {errorMessage}</p>
-              <p>Please try again.</p>
+              <p>Please try again later.</p>
             </div>
           )}
-          {videoUrl && videoStatus !== "completed" && !errorMessage && (
+          {videoStatus && videoStatus !== "completed" && !errorMessage && (
             <p>Video status: {videoStatus}</p>
           )}
           <button
