@@ -198,7 +198,7 @@ const VideoGeneratorForm = () => {
         const requestOptions = {
             method: 'GET',
             headers: {
-                'X-Api-Key': process.env.REACT_APP_API_KEY
+                'X-Api-Key': process.env.NEXT_PUBLIC_HEYGEN_API_KEY
             }
         };
 
