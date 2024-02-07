@@ -709,7 +709,7 @@ const handleLanguageChange = (e) => {
             </div>
           )}
           {videoStatus && videoStatus !== "completed" && !errorMessage && (
-            <p>Video status: {videoStatus}</p>
+            <p>Video status: {videoStatus}, This could take 1-2 mins</p>
           )}
           <button
             onClick={handleSubmit}
