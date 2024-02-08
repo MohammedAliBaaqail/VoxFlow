@@ -34,7 +34,7 @@ const VideoGeneratorForm = () => {
   const [isOpenAvatar, setIsOpenAvatar] = useState(false);
 
   const [videoId, setVideoId] = useState(null);
-  const [videoStatus, setVideoStatus] = useState('not set');
+  const [videoStatus, setVideoStatus] = useState();
   const [videoUrl, setVideoUrl] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [languages, setLanguages] = useState([]);
@@ -184,6 +184,7 @@ const VideoGeneratorForm = () => {
       } else {
         const errorResponse = await response.json();
         setErrorMessage(errorResponse.message);
+
       }
     } catch (error) {
       console.error("Error:", error);
@@ -192,6 +193,8 @@ const VideoGeneratorForm = () => {
   };
   
   useEffect(() => {
+    let interval; // Declare interval variable outside of the checkVideoStatus function
+
     const checkVideoStatus = async () => {
         const requestOptions = {
             method: 'GET',
@@ -202,11 +205,19 @@ const VideoGeneratorForm = () => {
 
         try {
             const response = await fetch(`https://api.heygen.com/v1/video_status.get?video_id=${videoId}`, requestOptions);
-            const { data } = await response.json();
-            setVideoStatus(data.status);
+            const { data, message } = await response.json();
 
-            if (data.status === 'completed') {
-                setVideoUrl(data.video_url);
+            if (message === 'Success') {
+                if (data.status === 'completed') {
+                    setVideoUrl(data.video_url);
+                    setVideoStatus();
+                    clearInterval(interval); // Clear interval when video processing is completed
+                } else if (data.status === 'failed') {
+                    setVideoStatus(data.error.detail); // Set videoStatus to the detail value in the response error
+                    clearInterval(interval); // Clear interval when video processing fails
+                }
+            } else {
+                console.error('Error:', message);
             }
         } catch (error) {
             console.error('Error:', error);
@@ -214,12 +225,17 @@ const VideoGeneratorForm = () => {
     };
 
     if (videoStatus === 'pending') {
-        const interval = setInterval(checkVideoStatus, 1000);
-        return () => clearInterval(interval);
+        setVideoStatus('Processing, This could take up to 2 Mins.');
+        interval = setInterval(checkVideoStatus, 2000); // Assign interval to the declared variable
     } else {
         checkVideoStatus(); // Call the function once if videoStatus is not pending
     }
+
+    return () => clearInterval(interval); // Clear interval on component unmount
+
 }, [videoId, videoStatus]);
+
+
 
 
 const handleLanguageChange = (e) => {
@@ -708,8 +724,8 @@ const handleLanguageChange = (e) => {
               <p>Please try again later.</p>
             </div>
           )}
-          {videoStatus && videoStatus !== "completed" && !errorMessage && (
-            <p>Video status: {videoStatus}, This could take 1-2 mins</p>
+          {videoStatus &&  !errorMessage && (
+            <p>Video status: {videoStatus}</p>
           )}
           <button
             onClick={handleSubmit}
