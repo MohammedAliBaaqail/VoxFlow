@@ -194,46 +194,47 @@ const VideoGeneratorForm = () => {
   
   useEffect(() => {
     let interval; // Declare interval variable outside of the checkVideoStatus function
-
+  
     const checkVideoStatus = async () => {
-        const requestOptions = {
-            method: 'GET',
-            headers: {
-                'X-Api-Key': process.env.NEXT_PUBLIC_HEYGEN_API_KEY
-            }
-        };
-
-        try {
-            const response = await fetch(`https://api.heygen.com/v1/video_status.get?video_id=${videoId}`, requestOptions);
-            const { data, message } = await response.json();
-
-            if (message === 'Success') {
-                if (data.status === 'completed') {
-                    setVideoUrl(data.video_url);
-                    setVideoStatus();
-                    clearInterval(interval); // Clear interval when video processing is completed
-                } else if (data.status === 'failed') {
-                    setVideoStatus(data.error.detail); // Set videoStatus to the detail value in the response error
-                    clearInterval(interval); // Clear interval when video processing fails
-                }
-            } else {
-                console.error('Error:', message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
+      const requestOptions = {
+        method: "GET",
+        headers: {
+          "X-Api-Key": process.env.NEXT_PUBLIC_HEYGEN_API_KEY,
+        },
+      };
+  
+      try {
+        const response = await fetch(
+          `https://api.heygen.com/v1/video_status.get?video_id=${videoId}`,
+          requestOptions
+        );
+        const { data  ,  message} = await response.json();
+  
+        if (data.status === "completed"   || ( video_url&&   message   ===  'Success') ) {
+          setVideoUrl(data.video_url);
+          setVideoStatus();
+          clearInterval(interval); // Clear interval when video processing is completed
+        } else if (data.status === "failed") {
+          setVideoStatus(data.error.detail); // Set videoStatus to the detail value in the response error
+          clearInterval(interval); // Clear interval when video processing fails
         }
+  
+        if (data.status === "pending") {
+          setVideoStatus("Processing, This could take up to 2 Mins.");
+        }
+      } catch (error) {
+        console.error("Error checking video status:", error);
+        setErrorMessage("An error occurred while checking the video status.");
+      }
     };
-
-    if (videoStatus === 'pending') {
-        setVideoStatus('Processing, This could take up to 2 Mins.');
-        interval = setInterval(checkVideoStatus, 2000); // Assign interval to the declared variable
-    } else {
-        checkVideoStatus(); // Call the function once if videoStatus is not pending
+  
+    if (videoId && (videoStatus === undefined || videoStatus === "pending")) {
+      checkVideoStatus(); // Call checkVideoStatus when videoId changes or videoStatus is pending
+      interval = setInterval(checkVideoStatus, 2000); // Assign interval to the declared variable
     }
-
-    return () => clearInterval(interval); // Clear interval on component unmount
-
-}, [videoId, videoStatus]);
+  
+    return () => clearInterval(interval); // Clear interval on component unmount or when dependencies change
+  }, [videoId, videoStatus]);
 
 
 
@@ -712,7 +713,7 @@ const handleLanguageChange = (e) => {
           <h3 className="max-md:mb-3">Result</h3>
         </div>
         <div className="w-10/12 max-md:w-full">
-          {videoUrl && videoStatus === "completed" && (
+          {videoUrl &&  (
             <video controls>
               <source src={videoUrl} type="video/mp4" />
               Your browser does not support the video tag.
