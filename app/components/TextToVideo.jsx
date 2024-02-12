@@ -216,6 +216,7 @@ const VideoGeneratorForm = () => {
           clearInterval(interval); // Clear interval when video processing is completed
         } else if (data.status === "failed") {
           setVideoStatus(data.error.detail); // Set videoStatus to the detail value in the response error
+          setErrorMessage(data.error.detail);
           clearInterval(interval); // Clear interval when video processing fails
         }
   
@@ -224,7 +225,7 @@ const VideoGeneratorForm = () => {
         }
       } catch (error) {
         console.error("Error checking video status:", error);
-        setErrorMessage("An error occurred while checking the video status.");
+        
       }
     };
   
