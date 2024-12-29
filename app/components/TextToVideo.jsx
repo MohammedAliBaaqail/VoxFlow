@@ -629,7 +629,7 @@ const handleLanguageChange = (e) => {
                             <span className="text-gray-700">
                               {`${option.display_name} - ${
                                 option.gender
-                              }, ${option.labels.join(", ")}`}
+                              }, ${option.labels?.join(", ")}`}
                             </span>
                           </div>
                         </li>

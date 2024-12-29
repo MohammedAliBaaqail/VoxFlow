@@ -39,7 +39,7 @@ const Home = () => {
                 : " text-gray-700" }`}>Speech To Text</h3>
             
           </div>
-          <div
+          {/* <div
             className={` flex justify-center items-center cursor-pointer py-2 px-4 w-full h-14 rounded-tr m ${
               activeTab === "TextToVideo"
                 ? "bg-gray-900 "
@@ -52,7 +52,7 @@ const Home = () => {
                 ? " text-white"
                 : " text-gray-700" }`}>Text To Video</h3>
             
-          </div> 
+          </div>  */}
         </div>
       </div>
 
@@ -62,9 +62,9 @@ const Home = () => {
       <div className={activeTab !== "speechToText" ? "hidden" : "container h-3/4"}>
         <SpeechToText />
       </div>
-      <div className={activeTab !== "TextToVideo" ? "hidden" : "container h-3/4"}>
+      {/* <div className={activeTab !== "TextToVideo" ? "hidden" : "container h-3/4"}>
         <TextToVideo />
-      </div>
+      </div> */}
     </main>
   );
 };
